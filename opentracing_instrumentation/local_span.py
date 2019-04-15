@@ -147,7 +147,8 @@ def traced_function(func=None, name=None, on_start=None,
                 return res
             except Exception as e:
                 deactivate_cb()
-                span.log(event='exception', payload=traceback.format_exc())
+                span.log(event='exception', payload=e)
+                span.log(event='traceback', payload=traceback.format_exc())
                 span.set_tag('error', 'true')
                 span.finish()
                 raise
