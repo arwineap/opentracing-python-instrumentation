@@ -20,6 +20,7 @@
 from __future__ import absolute_import
 from builtins import str
 import functools
+import traceback
 import contextlib2
 import tornado.concurrent
 from . import get_current_span, span_in_stack_context, utils
@@ -146,7 +147,7 @@ def traced_function(func=None, name=None, on_start=None,
                 return res
             except Exception as e:
                 deactivate_cb()
-                span.log(event='exception', payload=e)
+                span.log(event='exception', payload=traceback.format_exc())
                 span.set_tag('error', 'true')
                 span.finish()
                 raise
